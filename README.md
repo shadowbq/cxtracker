@@ -1,21 +1,27 @@
 # CxTracker
 
+[![Build Status](https://travis-ci.org/shadowbq/cxtracker.svg)](https://travis-ci.org/shadowbq/cxtracker)
+
 Connection Tracker - is a passive network connection tracker 
 
 ## About
+
 CxTracker (Connection Tracker) is a passive network connection tracker 
 for profiling, history, auditing and network discovery. It can be used 
 as an replacement for sancp in the sguil setup. It handles VLANs (2 layers)
 and IPv6 out of the box.
 
 ## Install
-See INSTALL
+
+See INSTALL.md
 
 ## USE 
 
 ### cxtracker (The C version)
 I use it now instead of sancp in my sguil setup.
 See '$ cxtracker --help' for updated info
+
+```shell
 cxtracker --help
 Usage:
      $ cxtracker [options]
@@ -42,17 +48,20 @@ Usage:
      -t <interval>  Roll over dump file based on time intervals.
      -x <bytes>     Amount of space to leave free on disk.
      -A             Write packets to directories by date (YYYY-MM-DD)
+```
 
 ### Example
+
 Running cxtracker in foreground:
  Only IPv4 traffic:
- ./cxtracker -d /nsm_data/sensor1/sancp -u nsm -g nsm -i eth1 -b 'ip'
+ `./cxtracker -d /nsm_data/sensor1/sancp -u nsm -g nsm -i eth1 -b 'ip'`
 
  Only VLAN and IPv4 traffic:
- ./cxtracker -d /nsm_data/sensor1/sancp -u nsm -g nsm -i eth1 -b 'vlan and ip'
+ `./cxtracker -d /nsm_data/sensor1/sancp -u nsm -g nsm -i eth1 -b 'vlan and ip'`
 
  vlan and IPv4 and IPv6:
- ./cxtracker -d /nsm_data/sensor1/sancp -u nsm -g nsm -i eth1
+ `./cxtracker -d /nsm_data/sensor1/sancp -u nsm -g nsm -i eth1`
 
 ## LICENSE
+
 This program is served 'as is'. We take no responsibility for anything :)

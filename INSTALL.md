@@ -1,35 +1,74 @@
 #### CxTracker INSTALL
 
-# TODO : apt-get install cxtracker
+# Basic installation 
 
-# On a Ubuntu system:
-$ sudo apt-get install libnet-pcap-perl libgetopt-long-descriptive-perl git-core libdatetime-perl libpcap0.8 libpcap0.8-dev
-$ git clone git://github.com/gamelinux/cxtracker.git
+libpcap 0.8 or higher with headers (dev package) is required.
 
-# C
-$ cd cxtracker/src/
-$ make
-$ sudo cxtracker -h
-# You can copy cxtracker to /usr/local/sbin/
-$ cp cxtracker /usr/local/sbin/
-# One way to run cxtracker:
-$ cxtracker -i eth1 -d /nsm_data/sensor1/session/ -D
+```shell
+$ wget https://github.com/shadowbq/cxtracker/archive/master.zip
+$ unzip master.zip
+$ cd cxtracker
+$ cd src && make && make test
+```
 
-# IF YOU USE cxtracker WITH SGUIL - you can stop here!
-# Just make sure that the sguil sancp agent is picking
-# up session files from the right location.
+## Install w/Contribs from git
 
-##   IF YOU WANT TO PUT SESSION DATA INTO A DB   ##
- # Maybe for your own project or for openfpc etc.#
+### On a Ubuntu system:
 
-# cxtracker2db.pl - for storing session data to a DB
-# Edit cxtracker2db.pl to match db user and password if needed.
+```shell
+$ sudo apt-get install git-core libpcap0.8-dev
+$ git clone git://github.com/shadowbq/cxtracker.git
+$ cd cxtracker
+$ cd src &&  make && make test
+$ sudo bin/cxtracker -h
+```
 
-# Some files and dirs that should be writable:
+### Copying the bin
+
+You can copy cxtracker to `/usr/local/sbin/` or `/opt/sbin/`
+
+```shell
+$ sudo mkdir -p /opt/sbin/
+$ sudo cp bin/cxtracker /opt/sbin/
+```
+
+## Contrib
+
+To use the perl Contrib files you may need:
+
+```shell
+$ sudo apt-get install libnet-pcap-perl libgetopt-long-descriptive-perl libdatetime-perl ```
+
+### init.d Examples
+
+There are mulitple examples of running cxtracker as a daemon process, with correct init.d files located in `etc\init.d\..`
+
+### Integrating with SGUIL:
+
+`$ /opt/sbin/cxtracker -i eth1 -d /nsm_data/sensor1/session/ -D`
+
+IF YOU USE cxtracker WITH SGUIL - you can stop here!
+Just make sure that the sguil sancp agent is picking up session files from the right location.
+
+### Installing with a Database
+
+Maybe for your own project or for openfpc etc.
+
+`contrib/cxtracker2db.pl` - for storing session data to a DB
+
+Edit `cxtracker2db.pl` to match db user and password if needed.
+
+Some files and dirs that should be writable:
+
+```shell
+$ cp bin/cxtracker2db.pl /opt/sbin/
 $ mkdir /var/run/
 $ touch /var/log/cxtracker2db.log
+```
 
-# Prepare the mysql database
+Prepare the mysql database
+
+```sql
 GRANT USAGE ON *.* TO 'cxtracker'@'localhost' identified by 'cxtracker';
 GRANT ALL ON cxtracker.* TO 'cxtracker'@'localhost' IDENTIFIED BY 'cxtracker';
 FLUSH PRIVILEGES;
@@ -37,10 +76,13 @@ FLUSH PRIVILEGES;
 CREATE DATABASE cxtracker;
 \u cxtracker
 
-# You need to add two function to mysql to handle IPv6 
-# INET_ATON6 and INET_NTOA6:
------8<-----
+```
 
+You need to add two function to mysql to handle IPv6 
+INET_ATON6 and INET_NTOA6:
+
+
+```sql
 DELIMITER //
 CREATE FUNCTION INET_ATON6(n CHAR(39))
 RETURNS DECIMAL(39) UNSIGNED
@@ -92,8 +134,10 @@ BEGIN
 END;
 //
 DELIMITER ;
-
 -----8<-----
+```
 
-# Then:
-$ ./cxtracker2db.pl --hostname sensor1 --dir /nsm_data/sensor1/session/ --daemon
+Then:
+```shell
+$ /opt/sbin/cxtracker2db.pl --hostname sensor1 --dir /nsm_data/sensor1/session/ --daemon
+```
