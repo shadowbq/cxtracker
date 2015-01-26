@@ -4,4 +4,4 @@ install:
 compiler:
   - clang
   - gcc
-script: cd src && make
+script: cd src && make && make test

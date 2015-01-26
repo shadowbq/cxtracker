@@ -16,16 +16,18 @@ OBJS= ip.o format.o cxtracker.o
 
 TARGETS=cxtracker
 
-all:${TARGETS}
-	  test -d bin/ || mkdir -p bin/
+all: $(TARGETS) 
 
 cxtracker: $(OBJS)
+	test -d bin/ || mkdir -p bin/
 	$(CC) $(OBJS) -o bin/cxtracker $(LIBS) $(LDFLAGS)
 
 debug: $(OBJS)
+	test -d bin/ || mkdir -p bin/
 	$(CC) $(OBJS) -o bin/cxtracker $(LIBS) $(DCFLAGS) $(LDFLAGS)
 
 profile: $(OBJS)
+	test -d bin/ || mkdir -p bin/
 	$(CC) $(OBJS) -o bin/cxtracker $(LIBS) $(PCFLAGS) $(LDFLAGS)
 
 clean:
@@ -35,3 +37,5 @@ clean:
 .c.o:
 	$(CC) -c -Wall $(DEFS) $(OCFLAGS) $<
 
+test:
+	bin/cxtracker -V | grep 'shadowbq'
