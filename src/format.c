@@ -115,8 +115,10 @@ void format_options()
     fprintf(stdout, "  %%nn           Newline\n");
     fprintf(stdout, "\n");
     fprintf(stdout, " Format Meta-Options:\n");
-    fprintf(stdout, "  standard       Standard formatted output compatible with Sguil and OpenFPC etc.\n");
-    fprintf(stdout, "  indexed        Pcap-indexed formatted output compatible with Echidna etc.\n");
+    fprintf(stdout, "  standard       Standard formatted output compatible with Sguil, OpenFPC, and NSM-like etc.\n");
+    fprintf(stdout, "  indexed        Pcap-indexed formatted output compatible with Echidna, etc.\n");
+    fprintf(stdout, "  logstash       Formatted output compatible with logstash.\n");
+    fprintf(stdout, "  human          Formatted output similiar to indexed without file references.\n");
     fprintf(stdout, "\n");
 }
 
@@ -148,6 +150,10 @@ void format_validate(const char *format)
         format_qualified = strdup("%cxd|%stm|%etm|%dur|%pro|%sin|%spt|%din|%dpt|%spk|%sby|%dpk|%dby|%sfl|%dfl");
     else if ( strncmp(format, "indexed", 7) == 0 )
         format_qualified = strdup("%cxd|%stm|%etm|%dur|%pro|%sip|%spt|%dip|%dpt|%spk|%sby|%dpk|%dby|%sfl|%dfl|%ver|%spf|%spo|%epf|%epo");
+    else if ( strncmp(format, "logstash", 8) == 0 )
+         format_qualified = strdup("%cxd %stm %etm %dur %pro %sip %spt %dip %dpt %spk %sby %dpk %dby %sfl %dfl %ver");
+    else if ( strncmp(format, "human", 5) == 0 )
+         format_qualified = strdup("%cxd|%stm|%etm|%dur|%pro|%sip|%spt|%dip|%dpt|%spk|%sby|%dpk|%dby|%sfl|%dfl|%ver");
     else
         format_qualified = strdup(format);
 
