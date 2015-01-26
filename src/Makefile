@@ -6,6 +6,7 @@ DCFLAGS=-g
 PCFLAGS=-g -pg
 LIBS=-lpcap
 LDFLAGS=
+RMCOMMAND = rm -f
 
 SRC= cxtracker.c cxtracker.h \
 format.c format.h \
@@ -16,18 +17,20 @@ OBJS= ip.o format.o cxtracker.o
 TARGETS=cxtracker
 
 all:${TARGETS}
+	  test -d bin/ || mkdir -p bin/
 
 cxtracker: $(OBJS)
-	$(CC) $(OBJS) -o cxtracker $(LIBS) $(LDFLAGS)
+	$(CC) $(OBJS) -o bin/cxtracker $(LIBS) $(LDFLAGS)
 
 debug: $(OBJS)
-	$(CC) $(OBJS) -o cxtracker $(LIBS) $(DCFLAGS) $(LDFLAGS)
+	$(CC) $(OBJS) -o bin/cxtracker $(LIBS) $(DCFLAGS) $(LDFLAGS)
 
 profile: $(OBJS)
-	$(CC) $(OBJS) -o cxtracker $(LIBS) $(PCFLAGS) $(LDFLAGS)
+	$(CC) $(OBJS) -o bin/cxtracker $(LIBS) $(PCFLAGS) $(LDFLAGS)
 
 clean:
-	-rm -f ${OBJS} ${TARGETS}
+	$(RMCOMMAND) ${OBJS}
+	$(RMCOMMAND) bin/cxtracker
 
 .c.o:
 	$(CC) -c -Wall $(DEFS) $(OCFLAGS) $<
