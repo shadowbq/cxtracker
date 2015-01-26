@@ -1,21 +1,17 @@
-#### CxTracker README
-#
-# Connection Tracker - is a passive network connection tracker 
-#
+# CxTracker
 
-# About
+Connection Tracker - is a passive network connection tracker 
+
+## About
 CxTracker (Connection Tracker) is a passive network connection tracker 
 for profiling, history, auditing and network discovery. It can be used 
 as an replacement for sancp in the sguil setup. It handles VLANs (2 layers)
 and IPv6 out of the box.
 
-# As is!
-This program is served 'as is'. We take no responsibility for anything :)
-
-# Install
+## Install
 See INSTALL
 
-#### USE ###
+## USE 
 
 ### cxtracker (The C version)
 I use it now instead of sancp in my sguil setup.
@@ -47,7 +43,7 @@ Usage:
      -x <bytes>     Amount of space to leave free on disk.
      -A             Write packets to directories by date (YYYY-MM-DD)
 
-# Example
+### Example
 Running cxtracker in foreground:
  Only IPv4 traffic:
  ./cxtracker -d /nsm_data/sensor1/sancp -u nsm -g nsm -i eth1 -b 'ip'
@@ -57,3 +53,6 @@ Running cxtracker in foreground:
 
  vlan and IPv4 and IPv6:
  ./cxtracker -d /nsm_data/sensor1/sancp -u nsm -g nsm -i eth1
+
+## LICENSE
+This program is served 'as is'. We take no responsibility for anything :)
