@@ -1,4 +1,6 @@
 language: c
+install:
+  - sudo apt-get install -qq libpcap-dev 
 compiler:
   - clang
   - gcc
