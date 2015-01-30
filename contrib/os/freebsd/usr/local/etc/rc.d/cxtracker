@@ -1,0 +1,53 @@
+#!/bin/sh
+#
+
+# PROVIDE: cxtracker
+# REQUIRE: DAEMON
+# BEFORE: LOGIN
+# KEYWORD: shutdown
+
+# Add the following lines to /etc/rc.conf to enable snort:
+# cxtracker_enable (bool):      Set to YES to enable
+#                 Default: NO
+# cxtracker_logdir (str):   Logging Directory
+#               Default: "/var/db/cxtracker"
+# cxtracker_format (str):   Logging Format
+#               Default: "logstash"
+# cxtracker_interface (str):  Network interface to sniff
+#               Default: ""
+# cxtracker_flags (str):    Extra flags passed 
+#               Default: ""
+
+. /etc/rc.subr
+
+name=cxtracker
+rcvar=cxtracker_enable
+
+load_rc_config ${name}
+
+[ -z "$cxtracker_enable" ]    && cxtracker_enable="NO"
+[ -z "$cxtracker_logdir" ]    && cxtracker_logdir="/var/db/cxtracker"
+[ -z "$cxtracker_format" ]    && cxtracker_format="logstash"
+[ -z "$cxtracker_flags" ]     && cxtracker_flags=""
+[ -z "$cxtracker_interface" ]     && cxtracker_interface=""
+
+piddir=/var/run
+pidfile=${piddir}/${name}.pid
+
+
+if [ -d $piddir ]; then
+  mkdir -p $piddir
+fi
+
+logdir="/var/db/cxtracker"
+
+if [ ! -d $logdir ]; then
+  mkdir -p $logdir
+fi
+
+command="/opt/sbin/cxtracker"
+command_args="-i ${cxtracker_interface} -d ${cxtracker_logdir} -f ${cxtracker_format} -D ${cxtracker_flags}"
+
+require_files="${command}"
+
+run_rc_command "$1"
